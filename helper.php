@@ -14,9 +14,33 @@ class modArticlePlacedAnywhereHelper
 {
 	static function renderItem(&$item, &$params)
 	{
-		$item->text 	= JHTML::_('content.prepare', $item->introtext);
+        require_once JPATH_SITE.'/components/com_content/helpers/route.php';
+        $item->readmore      = (trim($item->fulltext) != '');
+        $item->readmore_link = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug));
+
+        JPluginHelper::importPlugin('content');
+        $dispatcher	= JDispatcher::getInstance();
+        $offset     = 0;
+
+        if ($params->get('show_readmore', 1) || $params->get('show_intro_only', 1)) {
+            $item->text = $item->introtext;
+        } else {
+            $item->text = $item->introtext . ' ' . $item->fulltext;
+        }
+
+        $results = $dispatcher->trigger('onContentPrepare', array ('com_content.article', &$item, &$params, $offset));
+
+        $item->event = new stdClass();
+        $results = $dispatcher->trigger('onContentAfterTitle', array('com_content.article', &$item, &$params, $offset));
+        $item->event->afterDisplayTitle = trim(implode("\n", $results));
+
+        $results = $dispatcher->trigger('onContentBeforeDisplay', array('com_content.article', &$item, &$params, $offset));
+        $item->event->beforeDisplayContent = trim(implode("\n", $results));
+
+        $results = $dispatcher->trigger('onContentAfterDisplay', array('com_content.article', &$item, &$params, $offset));
+        $item->event->afterDisplayContent = trim(implode("\n", $results));
+
 		$item->groups 	= '';
-		$item->readmore = (trim($item->fulltext) != '');
 		$item->metadesc = '';
 		$item->metakey 	= '';
 		$item->access 	= '';
@@ -92,10 +116,25 @@ class modArticlePlacedAnywhereHelper
         $db->setQuery($query);
         $row = $db->loadObject();
 
-        $row->slug			= $row->alias ? ($row->id.':'.$row->alias) : $row->id;
-        $row->catslug		= $row->category_alias ? ($row->catid.':'.$row->category_alias) : $row->catid;
-        $row->parent_slug	= $row->category_alias ? ($row->parent_id.':'.$row->parent_alias) : $row->parent_id;
+        if (!empty($row)) {
+            $articleParams = new JRegistry;
+            $articleParams->loadString($row->attribs);
 
+            $row->slug			        = $row->alias ? ($row->id.':'.$row->alias) : $row->id;
+            $row->catslug		        = $row->category_alias ? ($row->catid.':'.$row->category_alias) : $row->catid;
+            $row->parent_slug	        = $row->category_alias ? ($row->parent_id.':'.$row->parent_alias) : $row->parent_id;
+            $row->alternative_readmore  = $articleParams->get('alternative_readmore');
+            $row->layout                = $articleParams->get('layout');
+
+            $user = JFactory::getUser();
+            $groups = $user->getAuthorisedViewLevels();
+
+            if ($row->catid == 0 || $row->category_access === null) {
+                $row->access_view = in_array($row->access, $groups);
+            } else {
+                $row->access_view = (in_array($row->access, $groups) && in_array($row->category_access, $groups));
+            }
+        }
 		return $row;
 	}
 }

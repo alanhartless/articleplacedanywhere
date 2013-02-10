@@ -9,19 +9,21 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-if (!defined('DS')) {
-    define("DS", DIRECTORY_SEPARATOR);
-}
 // Include the syndicate functions only once
 require_once (dirname(__FILE__).DS.'helper.php');
 
 $lang = JFactory::getLanguage();
 $lang->load('com_content', JPATH_SITE);
 
-$item = modArticlePlacedAnywhereHelper::getItem($params);
+//get the article default params
+$articleParams = JComponentHelper::getParams("com_content");
+$articleParams->merge($params);
+//we want the module's params to overwrite
+$params = $articleParams;
+$item   = modArticlePlacedAnywhereHelper::getItem($params);
 
 //require icon HTML
-include_once JPATH_SITE . DS . "components" . DS . "com_content" . DS . "helpers" . DS . "icon.php";
+include_once JPATH_SITE . "/components/com_content/helpers/icon.php";
 
 // check if any results returned
 if (empty( $item )) {

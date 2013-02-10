@@ -9,14 +9,23 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-
 ?>
+
 <div class='article_anywhere'>
 
 <?php if ($params->get('show_title')): ?>
-<h2 class='article_anywhere_title'><?php echo $item->title; ?></h2>
+<h2 class='article_anywhere_title'>
+    <?php if ($params->get('link_titles') && !empty($item->readmore_link)) : ?>
+    <a href="<?php echo $item->readmore_link; ?>">
+        <?php echo $this->escape($item->title); ?></a>
+    <?php else : ?>
+        <?php echo $this->escape($item->title); ?>
+    <?php endif; ?>
+</h2>
+<?php echo $item->event->afterDisplayTitle; ?>
 <?php endif; ?>
 
+<?php echo $item->event->beforeDisplayContent; ?>
 <?php
 $user = JFactory::getUser();
 if ($user->authorise('core.edit', 'com_content.article.' . $item->id)):
@@ -84,6 +93,30 @@ or ($params->get('show_hits'))); ?>
 <?php if ($useDefList) : ?>
 </dl>
 <?php endif; ?>
+    <?php echo $item->text; ?>
 
-<?php echo $item->text; ?>
+    <?php if ($params->get('show_readmore') && $item->readmore) :
+    $link = empty($item->access_view) ? JRoute::_('index.php?option=com_users&view=login') : $item->readmore_link;?>
+    <p class="readmore">
+        <a href="<?php echo $link; ?>" class="btn">
+            <i class="icon-chevron-right"></i>
+            <?php $attribs = json_decode($item->attribs); ?>
+            <?php
+            if (empty($item->access_view)) :
+                echo JText::_('COM_CONTENT_REGISTER_TO_READ_MORE');
+            elseif ($readmore = $item->alternative_readmore) :
+                echo $readmore;
+                if ($params->get('show_readmore_title', 0) != 0) :
+                    echo JHtml::_('string.truncate', ($item->title), $params->get('readmore_limit'));
+                endif;
+            elseif ($params->get('show_readmore_title', 0) == 0) :
+                echo JText::sprintf('COM_CONTENT_READ_MORE_TITLE');
+            else :
+                echo JText::_('COM_CONTENT_READ_MORE');
+                echo JHtml::_('string.truncate', ($item->title), $params->get('readmore_limit'));
+            endif; ?>
+        </a>
+    </p>
+    <?php endif; ?>
+    <?php echo $item->event->afterDisplayContent; ?>
 </div>

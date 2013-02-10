@@ -6,7 +6,7 @@
 	<copyright>Copyright (C) 2008 Ian MacLennan. All rights reserved. Portions Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.  Updated to Joomla 2.5 by Alan Hartless.  Copyright 2012 HartlessByDesign, LLC</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>alan@hartlessbydesign.com</authorEmail>
-	<version>1.0.4</version>
+	<version>1.1.0</version>
 	<description>ARTICLES_PLACED_ANYWHERE_DESCR</description>
 	<files>
 		<filename module="mod_articleplacedanywhere">mod_articleplacedanywhere.php</filename>
@@ -22,6 +22,11 @@
         <fields name="params">
         	<fieldset name="basic" addfieldpath="/administrator/components/com_content/models/fields">
 				<field name="id" type="modal_article" default="0" label="SELECT_ARTICLE" description="SELECT_ARTICLE_DESCR" />
+
+                <field name="show_intro_only" type="radio" default="1" label="SHOW_INTRO_ONLY" description="SHOW_INTRO_ONLY_DESCR">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
 
                 <field name="show_title" type="radio" default="0" label="SHOW_TITLE" description="SHOW_TITLE_DESCR">
                     <option value="0">JNO</option>
@@ -67,6 +72,12 @@
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
+
+                <field name="show_readmore" type="radio" default="1" label="SHOW_READMORE" description="SHOW_READMORE_DESCR">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+
             </fieldset>
 			<fieldset name="advanced">
 				<field name="layout" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
@@ -90,6 +101,6 @@
 	</config>
 
     <updateservers>
-        <server type="extension" priority="1" name="Articles Placed Anywhere Updates"><![CDATA[http://hartlessbydesign.com/index.php?option=com_ars&view=update&task=all&format=xml]]></server>
+        <server type="extension" priority="1" name="Article Placed Anywhere Updates"><![CDATA[http://hartlessbydesign.com/index.php?option=com_ars&view=update&task=all&format=xml]]></server>
     </updateservers>
 </extension>
