@@ -6,7 +6,7 @@
 	<copyright>Copyright (C) 2008 Ian MacLennan. All rights reserved. Portions Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.  Updated to Joomla 2.5 by Alan Hartless.  Copyright 2012 HartlessByDesign, LLC</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>alan@hartlessbydesign.com</authorEmail>
-	<version>1.1.0</version>
+	<version>1.1.2</version>
 	<description>ARTICLES_PLACED_ANYWHERE_DESCR</description>
 	<files>
 		<filename module="mod_articleplacedanywhere">mod_articleplacedanywhere.php</filename>
@@ -101,6 +101,6 @@
 	</config>
 
     <updateservers>
-        <server type="extension" priority="1" name="Article Placed Anywhere Updates"><![CDATA[http://hartlessbydesign.com/index.php?option=com_ars&view=update&task=all&format=xml]]></server>
+        <server type="extension" priority="1" name="Article Placed Anywhere Module"><![CDATA[http://hartlessbydesign.com/index.php?option=com_ars&view=update&task=stream&format=xml&id=6]]></server>
     </updateservers>
 </extension>

@@ -16,10 +16,9 @@ defined('_JEXEC') or die('Restricted access');
 <?php if ($params->get('show_title')): ?>
 <h2 class='article_anywhere_title'>
     <?php if ($params->get('link_titles') && !empty($item->readmore_link)) : ?>
-    <a href="<?php echo $item->readmore_link; ?>">
-        <?php echo $this->escape($item->title); ?></a>
+    <a href="<?php echo $item->readmore_link; ?>"><?php echo htmlspecialchars($item->title); ?></a>
     <?php else : ?>
-        <?php echo $this->escape($item->title); ?>
+    <?php echo htmlspecialchars($item->title); ?>
     <?php endif; ?>
 </h2>
 <?php echo $item->event->afterDisplayTitle; ?>
