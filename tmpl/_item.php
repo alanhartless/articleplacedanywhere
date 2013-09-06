@@ -11,7 +11,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<div class='article_anywhere'>
+<div class='article_anywhere<?php echo $moduleclass_sfx; ?>'>
 
 <?php if ($params->get('show_title')): ?>
 <h2 class='article_anywhere_title'>

@@ -19,7 +19,8 @@ $lang->load('com_content', JPATH_SITE);
 $articleParams = JComponentHelper::getParams("com_content");
 $articleParams->merge($params);
 //we want the module's params to overwrite
-$params = $articleParams;
+$params          = $articleParams;
+
 $item   = modArticlePlacedAnywhereHelper::getItem($params);
 
 //require icon HTML
@@ -39,6 +40,9 @@ if ($params->get('load_mootools', 0)) {
 $layout = $params->get('layout', 'default');
 $filter = JFilterInput::getInstance();
 $layout = $filter->clean($layout, 'word');
+
+$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+
 $path = JModuleHelper::getLayoutPath('mod_articleplacedanywhere', $layout);
 if (file_exists($path)) {
 	require($path);
