@@ -23,7 +23,9 @@ $params = $articleParams;
 $item   = modArticlePlacedAnywhereHelper::getItem($params);
 
 //require icon HTML
-include_once JPATH_SITE . "/components/com_content/helpers/icon.php";
+if (!class_exists("JHtmlIcon")) {
+    include_once JPATH_SITE . "/components/com_content/helpers/icon.php";
+}
 
 // check if any results returned
 if (empty( $item )) {
