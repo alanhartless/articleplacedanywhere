@@ -101,6 +101,6 @@
 	</config>
 
     <updateservers>
-        <server type="extension" priority="1" name="Article Placed Anywhere Module"><![CDATA[http://hartlessbydesign.com/index.php?option=com_ars&view=update&task=stream&format=xml&id=6]]></server>
+        <server type="extension" priority="1" name="Article Placed Anywhere Module"><![CDATA[http://devkardia.com/downloads/updates/modules/article-placed-anywhere?format=xml]]></server>
     </updateservers>
 </extension>
