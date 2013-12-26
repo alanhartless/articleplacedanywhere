@@ -17,9 +17,10 @@ $lang->load('com_content', JPATH_SITE);
 
 //get the article default params
 $articleParams = JComponentHelper::getParams("com_content");
-$articleParams->merge($params);
-//we want the module's params to overwrite
-$params          = $articleParams;
+//we want the module's params to overwrite - thanks designsinnovate
+$allParams = new JRegistry($articleParams->toArray());
+$allParams->merge($params);
+$params = $allParams;
 
 $item   = modArticlePlacedAnywhereHelper::getItem($params);
 
