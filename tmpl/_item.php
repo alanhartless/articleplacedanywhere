@@ -9,6 +9,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
 ?>
 
 <div class='article_anywhere<?php echo $moduleclass_sfx; ?>'>

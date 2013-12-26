@@ -41,9 +41,8 @@ $layout = $params->get('layout', 'default');
 $filter = JFilterInput::getInstance();
 $layout = $filter->clean($layout, 'word');
 
-$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
-
 $path = JModuleHelper::getLayoutPath('mod_articleplacedanywhere', $layout);
+
 if (file_exists($path)) {
 	require($path);
 }
