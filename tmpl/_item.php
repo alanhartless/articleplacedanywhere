@@ -10,6 +10,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+$images          = json_decode($item->images);
 ?>
 
 <div class='article_anywhere<?php echo $moduleclass_sfx; ?>'>
@@ -93,6 +94,16 @@ or ($params->get('show_hits'))); ?>
 <?php if ($useDefList) : ?>
 </dl>
 <?php endif; ?>
+    <?php  if ($params->get('image') && isset($images->image_fulltext) and !empty($images->image_fulltext)) : ?>
+        <?php $imgfloat = (empty($images->float_fulltext)) ? $params->get('float_fulltext') : $images->float_fulltext; ?>
+        <div class="img-fulltext-<?php echo htmlspecialchars($imgfloat); ?>">
+            <img
+                <?php if ($images->image_fulltext_caption):
+                    echo 'class="caption"'.' title="' .htmlspecialchars($images->image_fulltext_caption) .'"';
+                endif; ?>
+                src="<?php echo htmlspecialchars($images->image_fulltext); ?>" alt="<?php echo htmlspecialchars($images->image_fulltext_alt); ?>"/>
+        </div>
+    <?php endif; ?>
     <?php echo $item->text; ?>
 
     <?php if ($params->get('show_readmore') && $item->readmore) :
