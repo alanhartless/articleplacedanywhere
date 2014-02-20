@@ -12,48 +12,6 @@ defined('_JEXEC') or die('Restricted access');
 
 class modArticlePlacedAnywhereHelper
 {
-	static function renderItem(&$item, &$params)
-	{
-        require_once JPATH_SITE.'/components/com_content/helpers/route.php';
-        $item->readmore      = (trim($item->fulltext) != '');
-        $item->readmore_link = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug));
-
-        JPluginHelper::importPlugin('content');
-        $dispatcher	= JDispatcher::getInstance();
-        $offset     = 0;
-
-        if ($params->get('show_readmore', 1) || $params->get('show_intro_only', 1)) {
-            $item->text = $item->introtext;
-        } else {
-            $item->text = $item->introtext . ' ' . $item->fulltext;
-        }
-
-        $results = $dispatcher->trigger('onContentPrepare', array ('com_content.article', &$item, &$params, $offset));
-
-        $item->event = new stdClass();
-        $results = $dispatcher->trigger('onContentAfterTitle', array('com_content.article', &$item, &$params, $offset));
-        $item->event->afterDisplayTitle = trim(implode("\n", $results));
-
-        $results = $dispatcher->trigger('onContentBeforeDisplay', array('com_content.article', &$item, &$params, $offset));
-        $item->event->beforeDisplayContent = trim(implode("\n", $results));
-
-        $results = $dispatcher->trigger('onContentAfterDisplay', array('com_content.article', &$item, &$params, $offset));
-        $item->event->afterDisplayContent = trim(implode("\n", $results));
-
-		$item->groups 	= '';
-		$item->metadesc = '';
-		$item->metakey 	= '';
-		$item->access 	= '';
-		$item->created 	= '';
-		$item->modified = '';
-
-		if (!$params->get('image')) {
-			$item->text = preg_replace( '/<img[^>]*>/', '', $item->text );
-		}
-
-		require(JModuleHelper::getLayoutPath('mod_articleplacedanywhere', '_item'));
-	}
-
 	static function getItem(&$params)
 	{
 		$db 	= JFactory::getDBO();
@@ -134,6 +92,48 @@ class modArticlePlacedAnywhereHelper
             } else {
                 $row->access_view = (in_array($row->access, $groups) && in_array($row->category_access, $groups));
             }
+        }
+
+        //require icon HTML
+        if (!class_exists("JHtmlIcon")) {
+            include_once JPATH_SITE . "/components/com_content/helpers/icon.php";
+        }
+
+        require_once JPATH_SITE.'/components/com_content/helpers/route.php';
+        $row->readmore      = (trim($row->fulltext) != '');
+        $row->readmore_link = JRoute::_(ContentHelperRoute::getArticleRoute($row->slug, $row->catslug));
+
+        JPluginHelper::importPlugin('content');
+        $dispatcher	= JDispatcher::getInstance();
+        $offset     = 0;
+
+        if ($params->get('show_readmore', 1) || $params->get('show_intro_only', 1)) {
+            $row->text = $row->introtext;
+        } else {
+            $row->text = $row->introtext . ' ' . $row->fulltext;
+        }
+
+        $results = $dispatcher->trigger('onContentPrepare', array ('com_content.article', &$row, &$params, $offset));
+
+        $row->event = new stdClass();
+        $results = $dispatcher->trigger('onContentAfterTitle', array('com_content.article', &$row, &$params, $offset));
+        $row->event->afterDisplayTitle = trim(implode("\n", $results));
+
+        $results = $dispatcher->trigger('onContentBeforeDisplay', array('com_content.article', &$row, &$params, $offset));
+        $row->event->beforeDisplayContent = trim(implode("\n", $results));
+
+        $results = $dispatcher->trigger('onContentAfterDisplay', array('com_content.article', &$row, &$params, $offset));
+        $row->event->afterDisplayContent = trim(implode("\n", $results));
+
+        $row->groups 	= '';
+        $row->metadesc = '';
+        $row->metakey 	= '';
+        $row->access 	= '';
+        $row->created 	= '';
+        $row->modified = '';
+
+        if (!$params->get('image')) {
+            $row->text = preg_replace( '/<img[^>]*>/', '', $row->text );
         }
 		return $row;
 	}

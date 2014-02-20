@@ -16,34 +16,14 @@ $lang = JFactory::getLanguage();
 $lang->load('com_content', JPATH_SITE);
 
 //get the article default params
-$articleParams = JComponentHelper::getParams("com_content");
+$articleParams   = JComponentHelper::getParams("com_content");
 //we want the module's params to overwrite - thanks designsinnovate
-$allParams = new JRegistry($articleParams->toArray());
+$allParams       = new JRegistry($articleParams->toArray());
 $allParams->merge($params);
-$params = $allParams;
+$params          = $allParams;
 
-$item   = modArticlePlacedAnywhereHelper::getItem($params);
+$item            = modArticlePlacedAnywhereHelper::getItem($params);
+$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+$images          = json_decode($item->images);
 
-//require icon HTML
-if (!class_exists("JHtmlIcon")) {
-    include_once JPATH_SITE . "/components/com_content/helpers/icon.php";
-}
-
-// check if any results returned
-if (empty( $item )) {
-	return;
-}
-
-if ($params->get('load_mootools', 0)) {
-	JHTML::_( 'behavior.mootools' );
-}
-
-$layout = $params->get('layout', 'default');
-$filter = JFilterInput::getInstance();
-$layout = $filter->clean($layout, 'word');
-
-$path = JModuleHelper::getLayoutPath('mod_articleplacedanywhere', $layout);
-
-if (file_exists($path)) {
-	require($path);
-}
+require JModuleHelper::getLayoutPath('mod_articleplacedanywhere', $params->get('layout', 'default'));
